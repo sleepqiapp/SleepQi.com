@@ -68,20 +68,6 @@ export function CinematicIntro({ onComplete }: CinematicIntroProps) {
     return () => ctx.revert()
   }, [])
 
-  // Scroll detection — if user scrolls, exit intro and go to landing page
-  useEffect(() => {
-    if (isExiting) return
-
-    const handleScroll = () => {
-      if (window.scrollY > 20) {
-        handleContinue()
-      }
-    }
-
-    window.addEventListener("scroll", handleScroll, { passive: true })
-    return () => window.removeEventListener("scroll", handleScroll)
-  }, [isExiting, handleContinue])
-
   const handleContinue = useCallback(async () => {
     if (isExiting) return
     setIsExiting(true)
@@ -104,6 +90,20 @@ export function CinematicIntro({ onComplete }: CinematicIntroProps) {
 
     onComplete()
   }, [isExiting, controls, onComplete])
+
+  // Scroll detection — if user scrolls, exit intro and go to landing page
+  useEffect(() => {
+    if (isExiting) return
+
+    const handleScroll = () => {
+      if (window.scrollY > 20) {
+        handleContinue()
+      }
+    }
+
+    window.addEventListener("scroll", handleScroll, { passive: true })
+    return () => window.removeEventListener("scroll", handleScroll)
+  }, [isExiting, handleContinue])
 
   return (
     <motion.div
